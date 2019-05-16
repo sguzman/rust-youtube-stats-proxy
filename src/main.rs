@@ -5,7 +5,7 @@ use actix_web::{http, server, App, Path, Responder};
 
 fn get_addr() -> String {
     let key: &str = "PORT";
-    let value = match env::var(key) {
+    let value: String = match env::var(key) {
         Ok(val) => val,
         Err(_) => format!("{}","8888")
     };
@@ -14,16 +14,16 @@ fn get_addr() -> String {
     return addr;
 }
 
-fn index(info: Path<(u32, String)>) -> impl Responder {
+fn f(info: Path<(String, String)>) -> impl Responder {
     format!("Hello {}! id:{}", info.1, info.0)
 }
 
 fn main() {
-    let addr = get_addr();
+    let addr: String = get_addr();
+    let path: &str = "/{key}/{ids}";
 
-    server::new(
-        || App::new()
-            .route("/{id}/{name}", http::Method::GET, index))
+    server::new(move ||
+        App::new().route(path, http::Method::GET, f))
         .bind(addr).unwrap()
         .run();
 }
