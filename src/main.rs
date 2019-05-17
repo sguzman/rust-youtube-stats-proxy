@@ -1,21 +1,29 @@
 extern crate actix_web;
+extern crate reqwest;
 
-use std::env;
 use actix_web::{http, server, App, Path, Responder};
 
 fn get_addr() -> String {
     let key: &str = "PORT";
-    let value: String = match env::var(key) {
+    let value: String = match std::env::var(key) {
         Ok(val) => val,
         Err(_) => format!("{}","8888")
     };
 
     let addr: String = format!("localhost:{}", value);
+    println!("Listening at {}", addr);
+
     return addr;
 }
 
 fn f(info: Path<(String, String)>) -> impl Responder {
-    format!("Hello {}! id:{}", info.1, info.0)
+    let url: String =
+        format!("https://www.googleapis.com/youtube/v3/channels?part=statistics&key={}&id={}",
+                info.0, info.1);
+    let url: &str = url.as_ref();
+
+    let resp: String = reqwest::get(url).unwrap().text().unwrap();
+    format!("{}:{}\n{}", info.1, info.0, resp)
 }
 
 fn main() {
