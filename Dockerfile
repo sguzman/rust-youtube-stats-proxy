@@ -7,7 +7,7 @@ COPY ./Cargo.toml ./Cargo.toml
 
 RUN rustup install nightly
 RUN rustup default nightly
-RUN cargo install cargo-build-deps --verbose --color always
+RUN cargo install cargo-build-deps --verbose --color always --target=x86_64-unknown-linux-gnu --jobs 4
 RUN cargo build-deps --release
 
 ADD src src
