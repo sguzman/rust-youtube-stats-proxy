@@ -15,4 +15,5 @@ RUN cargo build --package rust-youtube-stats-proxy --bin $name --verbose --jobs 
 FROM scratch
 COPY --from=base /app/target/x86_64-unknown-linux-gnu/release/youtube /main
 
+RUN chmod +x /main
 ENTRYPOINT ["/main"]
