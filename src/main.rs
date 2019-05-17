@@ -55,6 +55,8 @@ fn get_addr() -> String {
 }
 
 fn f(info: Path<(String, String)>) -> impl Responder {
+    println!("{} {}", info.0, (info.1).len());
+
     let url: String =
         format!("https://www.googleapis.com/youtube/v3/channels?part=statistics&key={}&id={}",
                 info.0, info.1);
