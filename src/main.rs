@@ -1,42 +1,60 @@
-#![allow(non_snake_case)]
-
 extern crate actix_web;
 extern crate reqwest;
 extern crate serde;
 extern crate serde_json;
 
 use actix_web::{http, server, App, Path, Responder};
-use serde::{Deserialize, Serialize};
+use serde::Deserialize;
 use std::fmt::Write;
 
-#[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
+#[derive(Deserialize)]
 struct PageInfoType {
+    #[allow(dead_code)]
     totalResults: u8,
+    #[allow(dead_code)]
     resultsPerPage: u8
 }
 
-#[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
+#[derive(Deserialize)]
 struct StatisticsType {
     viewCount: String,
+
+    #[allow(dead_code)]
     commentCount: String,
     subscriberCount: String,
+
+    #[allow(dead_code)]
     hiddenSubscriberCount: bool,
     videoCount: String
 }
 
-#[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
+#[derive(Deserialize)]
 struct ItemType {
+    #[allow(dead_code)]
     kind: String,
+
+    #[allow(dead_code)]
     etag: String,
     id: String,
     statistics: StatisticsType
 }
 
-#[derive(Serialize, Deserialize)]
+#[allow(non_snake_case)]
+#[derive(Deserialize)]
 struct ChannelResponseType {
+    #[allow(dead_code)]
     kind: String,
+
+    #[allow(dead_code)]
     etag: String,
+
+    #[allow(dead_code)]
     nextPageToken: String,
+
+    #[allow(dead_code)]
     pageInfo: PageInfoType,
     items: Vec<ItemType>
 }
@@ -92,6 +110,8 @@ fn main() {
 
     server::new(move ||
         App::new().route(path, http::Method::GET, f))
+        .keep_alive(None)
+        .workers(4)
         .bind(addr).unwrap()
         .run();
 }

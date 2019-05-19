@@ -1,7 +1,6 @@
 FROM liuchong/rustup:nightly-musl AS base
 WORKDIR /app
 
-COPY ./Cargo.lock ./Cargo.lock
 COPY ./Cargo.toml ./Cargo.toml
 ADD src src
 
